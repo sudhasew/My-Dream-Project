@@ -8,7 +8,7 @@ let products = [
   },
   {
     name: "Cotton Leather Bag",
-    tag: "handbag",
+    tag: "leatherbag",
     price: 79,
     inCart: 0,
   },
@@ -20,38 +20,38 @@ let products = [
   },
   {
     name: "Polkadots Printed Bag",
-    tag: "handbag",
+    tag: "totebag",
     price: 50,
     inCart: 0,
   },
   {
     name: "Flowers Printed Bag",
-    tag: "backpack",
+    tag: "dividerbag",
     price: 50,
     inCart: 0,
   },
   {
     name: "Cats Printed Bag",
-    tag: "handbag",
+    tag: "bigbackpack",
     price: 50,
     inCart: 0,
   },
   {
     name: "Green Crossbody Bag",
-    tag: "handbag",
+    tag: "luxurybag",
     price: 45,
     inCart: 0,
   },
   {
     name: "Green Color Printed Bag",
-    tag: "handbag",
+    tag: "crossbodyhandbag",
     price: 40,
     inCart: 0,
   },
 ];
 for (let i = 0; i < carts.length; i++) {
   carts[i].addEventListener("click", () => {
-    cartNumbers();
+    cartNumbers(products[i]);
   });
 }
 function onLoadCartNumbers() {
@@ -61,7 +61,8 @@ function onLoadCartNumbers() {
   }
 }
 
-function cartNumbers() {
+function cartNumbers(product) {
+  // console.log("The product clicked is", product);
   let productNumbers = localStorage.getItem("cartNumbers");
   productNumbers = parseInt(productNumbers);
   if (productNumbers) {
@@ -71,5 +72,26 @@ function cartNumbers() {
     localStorage.setItem("cartNumbers", 1);
     document.querySelector(".cart span").textContent = 1;
   }
+  setItems(product);
+}
+function setItems(product) {
+  let cartItems = localStorage.getItem("productsInCart");
+  cartItems = JSON.parse(cartItems);
+
+  if (cartItems != null) {
+    if (cartItems[product.tag] == undefined) {
+      cartItems = {
+        ...cartItems,
+        [product.tag]: product,
+      };
+    }
+    cartItems[product.tag].inCart += 1;
+  } else {
+    product.inCart = 1;
+    cartItems = {
+      [product.tag]: product,
+    };
+  }
+  localStorage.setItem("productsInCart", JSON.stringify(cartItems));
 }
 onLoadCartNumbers();
