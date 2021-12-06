@@ -26,7 +26,7 @@ let products = [
   },
   {
     name: "Flowers Printed Bag",
-    tag: "dividerbag",
+    tag: "backpack",
     price: 50,
     inCart: 0,
   },
@@ -52,6 +52,7 @@ let products = [
 for (let i = 0; i < carts.length; i++) {
   carts[i].addEventListener("click", () => {
     cartNumbers(products[i]);
+    totalCost(products[i]);
   });
 }
 function onLoadCartNumbers() {
@@ -94,4 +95,38 @@ function setItems(product) {
   }
   localStorage.setItem("productsInCart", JSON.stringify(cartItems));
 }
+function totalCost(product) {
+  // console.log("The product price is", product.price);
+  let cartCost = localStorage.getItem("totalCost");
+  console.log("My cart cost is", cartCost);
+  if (cartCost != null) {
+    cartCost = parseInt(cartCost);
+    localStorage.setItem("totalCost", cartCost + product.price);
+  } else {
+    localStorage.setItem("totalCost", product.price);
+  }
+}
+function displayCart() {
+  let cartItems = localStorage.getItem("productsInCart");
+  cartItems = JSON.parse(cartItems);
+  let productContainer = document.querySelector(".products");
+  if (cartItems && productContainer) {
+    productContainer.innerHTML = "";
+    Object.values(cartItems).map((item) => {
+      productContainer.innerHTML += `<div class="product">
+           <ion-icon name="close-circle-outline"></ion-icon>
+           <img src="./assets/${item.tag}.jpeg" width="100px">
+           <span>${item.name}</span> 
+           </div>
+           <div class="price">${item.price}</div>
+           <div class="quantity">
+           <ion-icon name="arrow-dropleft-circle"></ion-icon>
+           <span>${item.inCart}</span>
+           <ion-icon name="arrow-dropright-circle"></ion-icon>
+           </div>
+           `;
+    });
+  }
+}
 onLoadCartNumbers();
+displayCart();
