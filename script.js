@@ -97,14 +97,14 @@ function setItems(product) {
 }
 function totalCost(product) {
   // console.log("The product price is", product.price);
-  let cartCost = localStorage.getItem("totalCost");
-  console.log("My cart cost is", cartCost);
+  let cartCost = window.localStorage.getItem("totalCost");
   if (cartCost != null) {
     cartCost = parseInt(cartCost);
     localStorage.setItem("totalCost", cartCost + product.price);
   } else {
     localStorage.setItem("totalCost", product.price);
   }
+  console.log("My total cart cost is", product.price + cartCost);
 }
 function displayCart() {
   let cartItems = localStorage.getItem("productsInCart");
